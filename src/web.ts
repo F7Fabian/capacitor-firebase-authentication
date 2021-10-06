@@ -27,12 +27,6 @@ import type {
 export class FirebaseAuthenticationWeb
   extends WebPlugin
   implements FirebaseAuthenticationPlugin {
-  constructor() {
-    super();
-    const auth = getAuth();
-    auth.onAuthStateChanged(user => this.handleAuthStateChange(user));
-  }
-
   public async getCurrentUser(): Promise<GetCurrentUserResult> {
     const auth = getAuth();
     const userResult = this.createUserResult(auth.currentUser);
@@ -131,15 +125,7 @@ export class FirebaseAuthenticationWeb
     const auth = getAuth();
     auth.useDeviceLanguage();
   }
-
-  private handleAuthStateChange(user: FirebaseUser | null): void {
-    const userResult = this.createUserResult(user);
-    const change: AuthStateChange = {
-      user: userResult,
-    };
-    this.notifyListeners('authStateChange', change);
-  }
-
+  
   private createSignInResult(
     user: FirebaseUser,
     credential: FirebaseAuthCredential | null,
